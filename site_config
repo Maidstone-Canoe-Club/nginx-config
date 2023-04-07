@@ -1,0 +1,17 @@
+server {
+        server_name mcc.mattclegg.dev www.mcc.mattclegg.dev;
+
+        location / {
+                proxy_pass http://127.0.0.1:8080;
+                include proxy_params;
+        }
+
+        location /cms {
+                return 301 https://$host/cms/;
+        }
+
+        location ~* ^/cms(/.*)$ {
+                set $upstream 127.0.0.1:8055;
+                proxy_pass http://$upstream$1$is_args$args;
+        }
+}
